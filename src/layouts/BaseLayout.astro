@@ -1,0 +1,24 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+const { title = "My Astro Site", description = "Just getting started" } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="icon" href="/favicon.svg" />
+    <!-- Optional: add web app manifest later for installability -->
+  </head>
+  <body>
+    <Nav />
+    <main class="container">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

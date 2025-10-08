@@ -1,0 +1,167 @@
+---
+/**
+ * Props:
+ * - title: string
+ * - subtitle?: string
+ * - cta?: { label: string; href: string }
+ * - overlaySide?: "left" | "right" | "top" | "bottom"  // where the gradient starts
+ * - overlayWidth?: string  // e.g., "70vw" or "820px"
+ */
+const {
+  title = "Your Headline",
+  subtitle = "Short value proposition goes here.",
+  cta,
+  overlaySide = "left",
+  overlayWidth = "72vw",
+} = Astro.props;
+---
+<section class="hero">
+  <!-- Background video -->
+  <video
+    class="hero__video"
+    autoplay
+    muted
+    loop
+    playsinline
+    poster="/media/hero-poster.jpg"
+  >
+    <source src="/media/homepage_movie.mov" type="video/webm" />
+    <source src="/media/hero.mp4" type="video/mp4" />
+    <!-- Fallback text for very old browsers -->
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Partial gradient overlay -->
+  <div
+    class="hero__overlay"
+    style={`--overlay-width:${overlayWidth}; --overlay-side:${overlaySide};`}
+    aria-hidden="true"
+  />
+
+  <!-- Text content -->
+  <div class="hero__content container">
+    <h1 class="hero__title">{title}</h1>
+    {subtitle && <p class="hero__subtitle">{subtitle}</p>}
+    {cta && (
+      <p class="hero__cta">
+        <a class="btn" href={cta.href}>{cta.label}</a>
+      </p>
+    )}
+  </div>
+</section>
+
+<script is:inline>
+  // Respect prefers-reduced-motion: pause video if user prefers less motion
+  try {
+    const m = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (m?.matches) {
+      const v = document.querySelector('.hero__video');
+      if (v) { v.pause?.(); v.removeAttribute('autoplay'); v.removeAttribute('loop'); }
+    }
+  } catch {}
+</script>
+
+<style>
+.hero {
+  position: relative;
+  min-height: clamp(60vh, 60vh + 10vw, 86vh);
+  display: grid;
+  align-items: end; /* keep text toward bottom for a cinematic feel */
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* full-bleed video */
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* partial gradient overlay */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Base: no overlay, then we add a directional gradient below */
+  background: none;
+  /* size control for side overlays */
+  width: 100%;
+  height: 100%;
+}
+.hero__overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* default left-to-right gradient covering a portion of the frame */
+  background:
+    linear-gradient(to right, rgba(15,23,42,.85), rgba(15,23,42,.65) 60%, rgba(15,23,42,0) 100%);
+  /* constrain width so it only partially covers the video */
+  width: var(--overlay-width, 72vw);
+  height: 100%;
+}
+
+/* switch gradient direction based on overlaySide */
+:where(.hero__overlay)[style*="--overlay-side:right"]::before {
+  right: 0; left: auto;
+  background:
+    linear-gradient(to left, rgba(15,23,42,.85), rgba(15,23,42,.65) 60%, rgba(15,23,42,0) 100%);
+}
+:where(.hero__overlay)[style*="--overlay-side:top"]::before {
+  inset: 0 auto auto 0;
+  width: 100%; height: var(--overlay-width, 60vh);
+  background:
+    linear-gradient(to bottom, rgba(15,23,42,.85), rgba(15,23,42,.65) 60%, rgba(15,23,42,0) 100%);
+}
+:where(.hero__overlay)[style*="--overlay-side:bottom"]::before {
+  inset: auto 0 0 0;
+  width: 100%; height: var(--overlay-width, 60vh);
+  background:
+    linear-gradient(to top, rgba(15,23,42,.85), rgba(15,23,42,.65) 60%, rgba(15,23,42,0) 100%);
+}
+
+/* content */
+.hero__content {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(2rem, 6vh, 4rem);
+}
+
+.hero__title {
+  text-align: center;
+  color: #fff;
+  margin: 0 0 .5rem;
+  font-size: clamp(1.8rem, 1.2rem + 3vw, 3rem);
+  letter-spacing: .2px;
+}
+
+.hero__subtitle {
+  margin: 0 0 1rem;
+  color: var(--ink-dim);
+  max-width: 60ch;
+  font-size: clamp(1rem, .95rem + .5vw, 1.25rem);
+}
+
+.hero__cta .btn {
+  display: inline-block;
+  padding: .75rem 1rem;
+  border-radius: 12px;
+  background: #111827;
+  border: 1px solid #243143;
+  text-decoration: none;
+}
+.hero__cta .btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* keep text readable on small screens */
+@media (max-width: 480px) {
+  .hero__content { padding-block: 2rem; }
+  .hero__subtitle { max-width: 42ch; }
+}
+
+/* accessibility: if user prefers reduced motion, ensure poster shows and layout remains solid */
+@media (prefers-reduced-motion: reduce) {
+  .hero { min-height: 60vh; }
+}
+</style>
