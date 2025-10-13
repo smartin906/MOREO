@@ -1,0 +1,115 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  imageSrc: string;
+  imageAlt?: string;
+  overlaySide?: "left" | "right" | "top" | "bottom";
+  overlayWidth?: string;      // e.g. "70vw" or "60vh"
+  objectPosition?: string;    // e.g. "center 30%"
+
+  /* centered image area above H1 */
+  logoSrc?: string;           // e.g. "/media/lockup.svg" or "/media/lockup.png"
+  logoAlt?: string;
+  logoHeight?: number;        // px height for the image/placeholder (default 72)
+  logoAlign?: "center" | "left" | "right"; // default center
+}
+const {
+  title,
+  subtitle,
+  imageSrc,
+  imageAlt = "",
+  overlaySide = "left",
+  overlayWidth = "70vw",
+  objectPosition = "center",
+  logoSrc,
+  logoAlt = "",
+  logoHeight = 72,
+  logoAlign = "center",
+} = Astro.props as Props;
+---
+<section class="hero section section--wide">
+  <!-- Background image -->
+  <img
+    class="hero__image"
+    src={imageSrc}
+    alt={imageAlt}
+    width="1920"
+    height="1080"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+    style={`object-position:${objectPosition};`}
+  />
+
+  <!-- Partial gradient overlay -->
+  <div
+    class="hero__overlay"
+    data-side={overlaySide}
+    style={`--overlay-width:${overlayWidth};`}
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="wrap hero__content" data-align={logoAlign}>
+    <div class="hero__logo">
+      {logoSrc ? (
+        <img
+          src={logoSrc}
+          alt={logoAlt}
+          height={logoHeight}
+          style={`height:${logoHeight}px; width:auto;`}
+          decoding="async"
+        />
+      ) : (
+        <div class="hero__logoPlaceholder" style={`height:${logoHeight}px;`}>
+          <span>Image Placeholder</span>
+        </div>
+      )}
+    </div>
+
+    <h1 class="hero__title">{title}</h1>
+    {subtitle && <p class="hero__subtitle">{subtitle}</p>}
+  </div>
+
+  <style>
+    .hero {
+      position: relative;
+      min-height: clamp(52vh, 52vh + 8vw, 80vh);
+      display: grid;
+      align-items: end;
+      overflow: clip;
+      isolation: isolate;
+    }
+    .hero__image {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* overlay (data-attribute avoids parser issues) */
+    .hero__overlay { position: absolute; inset: 0; pointer-events:none; width:100%; height:100%; --angle:90deg; }
+    .hero__overlay::before {
+      content:""; position:absolute; inset:0;
+      width: var(--overlay-width, 70vw); height:100%;
+      background: linear-gradient(var(--angle), rgba(15,23,42,.86), rgba(15,23,42,.65) 60%, rgba(15,23,42,0) 100%);
+    }
+    .hero__overlay[data-side="right"] { --angle:270deg; }
+    .hero__overlay[data-side="right"]::before { left:auto; right:0; }
+    .hero__overlay[data-side="top"] { --angle:180deg; }
+    .hero__overlay[data-side="top"]::before { width:100%; height:var(--overlay-width,60vh); inset:0 auto auto 0; }
+    .hero__overlay[data-side="bottom"] { --angle:0deg; }
+    .hero__overlay[data-side="bottom"]::before { width:100%; height:var(--overlay-width,60vh); inset:auto 0 0 0; }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      padding-block: clamp(2rem, 6vh, 4rem);
+      text-align: center; /* default */
+    }
+    /* allow left/right alignment if desired */
+    .hero__content[data-align="left"] { text-align: left; }
+    .hero__content[data-align="right"] { text-align: right; }
+
+    .hero__logo {
+      display: grid;

@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHero from "../components/sections/SectionHero.astro";
+import SectionIntro from "../components/sections/SectionIntro.astro";
+import SectionCopyTwoCol from "../components/sections/SectionCopyTwoCol.astro";
+import SectionCopy from "../components/sections/SectionCopy.astro";
+import SectionGallery from "../components/sections/SectionGallery.astro";
+import SectionCTA from "../components/sections/SectionCTA.astro";
+
+import items from "../data/gallery-sample.json";
+---
+<BaseLayout title="Template Example | MRSP" description="Reusable page template with sections.">
+  <SectionHero
+    title="Open the door to higher education"
+    subtitle="Explore Missouri colleges, compare options, and connect directly with admissions — all from one place."
+    imageSrc="/media/home_page_hero.png"
+    imageAlt="Students exploring options"
+    overlaySide="bottom"
+    overlayWidth="70vw"
+    objectPosition="center 40%"
+  />
+
+  <SectionIntro>
+    Our mission is simple: make higher education pathways clear, supportive, and accessible for every rural student in Missouri.
+  </SectionIntro>
+
+  <SectionCopyTwoCol pullQuote={{ text: "This program helped me find the right school and the right support.", cite: "UCM transfer student" }}>
+    <Fragment slot="left">
+      <p><strong>What we offer:</strong> mentorship, application support, and direct connections to university staff.</p>
+      <p>From FAFSA to campus visits, our team helps you make confident choices.</p>
+    </Fragment>
+    <Fragment slot="right">
+      <p><strong>Who it’s for:</strong> rural high-school students, parents/guardians, and mentors who want to help.</p>
+      <p>We partner with Missouri public universities to bring resources closer to home.</p>
+    </Fragment>
+  </SectionCopyTwoCol>
+
+  <SectionGallery
+    title="Programs & Moments"
+    description="A peek at recent events, workshops, and success stories."
+    items={items}
+  />
+
+  <SectionCopy>
+    <p>We’re expanding our network of mentors, adding more university partners, and building tools that remove friction from every step of the process.</p>
+    <p>Want to help us grow? Join the mentorship network or host an event in your community.</p>
+  </SectionCopy>
+
+  <SectionCTA
+    title="Ready to get started?"
+    text="Tell us about your goals and we’ll pair you with resources and people who can help."
+    cta={{ label: "Contact us", href: "/contact" }}
+  />
+</BaseLayout>

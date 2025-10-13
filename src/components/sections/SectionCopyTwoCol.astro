@@ -1,0 +1,31 @@
+---
+interface Props {
+  left?: any;
+  right?: any;
+  pullQuote?: { text: string; cite?: string } | null;
+}
+const { left, right, pullQuote = null } = Astro.props as Props;
+---
+<section class="section">
+  <div class="wrap">
+    {pullQuote && (
+      <figure class="wrap wrap--narrow" style="margin-bottom:1rem;">
+        <blockquote class="pull">{pullQuote.text}</blockquote>
+        {pullQuote.cite && <figcaption style="opacity:.8;margin-top:.25rem;">— {pullQuote.cite}</figcaption>}
+      </figure>
+    )}
+    <div class="cols">
+      <article class="prose">
+        {left ? <Fragment set:html={left} /> : <slot name="left" />}
+      </article>
+      <article class="prose">
+        {right ? <Fragment set:html={right} /> : <slot name="right" />}
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .prose p { margin: 0 0 1rem; }
+  .prose ul, .prose ol { margin: 0 0 1rem 1.2rem; }
+</style>

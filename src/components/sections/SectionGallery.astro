@@ -1,0 +1,82 @@
+---
+interface Item {
+  src: string;
+  alt?: string;
+  title?: string;
+  text?: string;
+}
+interface Props {
+  items: Item[];
+  title?: string;
+  description?: string;
+}
+const { items, title, description } = Astro.props as Props;
+---
+<section class="section">
+  <div class="wrap">
+    {title && <h2 style="margin:0 0 .5rem;">{title}</h2>}
+    {description && <p style="margin:0 0 1rem; color:#94a3b8;">{description}</p>}
+
+    <div class="cards">
+      {items.map((it, i) => (
+        <article class="card">
+          <button class="thumb" data-idx={i} aria-label={`Open ${it.title ?? 'image'}`}>
+            <img src={it.src} alt={it.alt ?? ''} loading="lazy" decoding="async" />
+          </button>
+          <div class="card__body">
+            {it.title && <h3 style="margin:0; font-size:1rem;">{it.title}</h3>}
+            {it.text && <p style="margin:.25rem 0 0; color:#cbd5e1;">{it.text}</p>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- lightbox -->
+  <dialog id="glx" class="glx">
+    <button class="glx__close" aria-label="Close">×</button>
+    <figure class="glx__content">
+      <img id="glxImg" alt="" />
+      <figcaption id="glxCap"></figcaption>
+    </figure>
+  </dialog>
+
+  <style>
+    .thumb { all: unset; cursor: pointer; }
+    .thumb:focus-visible { outline:2px solid var(--accent, #facc15); outline-offset:2px; }
+
+    .glx { border: 1px solid #1f2937; border-radius: 16px; padding: 0; background: #0b1220; color: #e2e8f0; width: min(92vw, 980px); }
+    .glx::backdrop { background: rgba(0,0,0,.6); }
+    .glx__close {
+      position:absolute; top:.5rem; right:.5rem; border:1px solid #243143; background:#111827; color:#e2e8f0;
+      border-radius:12px; padding:.25rem .6rem; cursor:pointer;
+    }
+    .glx__content { margin:0; display:grid; gap:.5rem; padding: .75rem; }
+    .glx__content img { width: 100%; height: auto; border-radius: 10px; }
+    .glx__content figcaption { color:#94a3b8; }
+  </style>
+
+  <script is:inline>
+    const data = JSON.parse(String.raw`${JSON.stringify(items)}`);
+    const dialog = document.getElementById('glx');
+    const img = document.getElementById('glxImg');
+    const cap = document.getElementById('glxCap');
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest?.('.thumb');
+      if (btn) {
+        const idx = Number(btn.dataset.idx);
+        const it = data[idx];
+        img.src = it.src; img.alt = it.alt || "";
+        cap.textContent = it.title ? (it.text ? `${it.title} — ${it.text}` : it.title) : (it.text || "");
+        dialog.showModal();
+      }
+      if (e.target.closest?.('.glx__close')) dialog.close();
+      if (e.target === dialog) dialog.close(); // click backdrop
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dialog.open) dialog.close();
+    });
+  </script>
+</section>
