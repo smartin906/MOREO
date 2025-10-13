@@ -45,6 +45,8 @@ const {
     {cta && (
       <p class="hero__cta">
         <a class="btn" href={cta.href}>{cta.label}</a>
+                <a class="btn" href={cta.href}>{cta.label}</a>
+
       </p>
     )}
   </div>
@@ -138,9 +140,13 @@ const {
 }
 
 .hero__subtitle {
-  margin: 0 0 1rem;
-  color: var(--ink-dim);
-  max-width: 60ch;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  text-align: center;
+  margin: 3rem, 0;
+  padding: .5rem 0;
+  color: #fff;
+  max-width: fit-content;
   font-size: clamp(1rem, .95rem + .5vw, 1.25rem);
 }
 
@@ -151,6 +157,7 @@ const {
   background: #111827;
   border: 1px solid #243143;
   text-decoration: none;
+  color: #fff;
 }
 .hero__cta .btn:hover { border-color: var(--accent); color: var(--accent); }
 

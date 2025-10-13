@@ -1,5 +1,210 @@
-<footer>
-  <div class="container">
-    <p>© {new Date().getFullYear()} Your Project. All rights reserved.</p>
-  </div>
-</footer>
+<>
+  <footer class="site-footer">
+    <div class="container container--fluid">
+
+      <!-- Logo placeholder -->
+      <a href="/" class="footer__brand" aria-label="Home">
+        <img src="/media/MOREO_secondary_rev.svg" alt="Your logo" width="120" height="120" class="footer__logo" />
+      </a>
+
+      <!-- typography graphic placeholder -->
+
+       <a href="/" class="footer__typo" aria-label="Home">
+        <img src="/media/lets_connect.svg" alt="Your logo" width="120" height="auto" class="footer__logo" />
+      </a>
+
+      <form id="contact" class="footer-form" method="post" action="/api/contact" novalidate>
+        <!-- spam honeypot -->
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="form-grid">
+          <!-- Name -->
+          <div class="field">
+            <label for="name">First name</label>
+            <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+            <small class="hint">Required</small>
+          </div>
+
+          <div class="field">
+            <label for="lastname">Last name</label>
+            <input id="lastname" name="lastname" type="text" required autocomplete="family-name" placeholder="Doe" />
+            <small class="hint">Required</small>
+          </div>
+
+          <!-- Phone -->
+          <div class="field">
+            <label for="phone">Phone <span class="muted">(optional)</span></label>
+            <input
+              id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+              placeholder="(555) 555-5555"
+              pattern="^\\+?[\\d\\s\\-\\(\\)]{7,}$"
+            />
+            <small class="hint">Digits, spaces, dashes, or parentheses</small>
+          </div>
+
+            <!-- Email -->
+            <div class="field">
+            <label for="email">Email</label>
+            <input
+              id="email" name="email" type="email" required autocomplete="email"
+              placeholder="jane@example.com"
+            />
+            <small class="hint">Required</small>
+            </div>
+
+          <!-- Consent -->
+          <div class="field field--full">
+            <label class="consent">
+              <input id="consent" name="consent" type="checkbox" required />
+              <span>By checking this box, you agree to our <a href="/terms">Terms</a> and acknowledge our <a href="/privacy">Privacy Policy</a>.</span>
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <div class="actions field--full">
+            <button type="submit" class="btn">Send</button>
+            <span class="status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </form>
+
+      <!-- Social media -->
+      <nav class="social" aria-label="Social media">
+        <ul class="social__list">
+          <li>
+            <a class="social__link" href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <img src="/public/media/facebook.svg" alt="" width="24" height="24" />
+              <span class="sr-only">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="social__link" href="https://x.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="X (formerly Twitter)">
+              <img src="/public/media/twitter.svg" alt="" width="24" height="24" />
+              <span class="sr-only">X</span>
+            </a>
+          </li>
+          <li>
+            <a class="social__link" href="https://instagram.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <img src="/public/media/instagram.svg" alt="" width="24" height="24" />
+              <span class="sr-only">Instagram</span>
+            </a>
+          </li>
+          <li>
+            <a class="social__link" href="https://www.linkedin.com/company/yourcompany" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <img src="/public/media/linkedin.svg" alt="" width="24" height="24" />
+              <span class="sr-only">LinkedIn</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <hr class="footer__rule" />
+      <p class="footer__copy">© {new Date().getFullYear()} Missouri Rural Education Outreach. All rights reserved.</p>
+    </div>
+
+    <style>
+      .site-footer { background-color: #519AD4; color: #fff; border-top:1px solid var(--border); padding:2rem 0; margin-top:2rem; width: 100%;  }
+      .footer__brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        padding-bottom: 1.75rem;
+      }
+      .footer__logo { width:auto; height:225px; object-fit:contain; filter: brightness(1.1) contrast(1.1); }
+      .footer__typo { width:auto; height:100px; object-fit:contain; }      
+      .footer__heading { margin:.25rem 0; font-size: clamp(1.1rem, .9rem + .8vw, 1.5rem); }
+      .footer__intro { margin:0 0 1rem; }
+      .footer__rule { border:0; border-top:1px solid var(--border); margin:1.5rem 0 .75rem; }
+      .footer__copy { margin:0; color: #e2e8f0; text-align: center;}
+
+      .footer-form { margin-top: .75rem; }
+      .form-grid { display:grid; grid-template-rows: 1fr; gap: 2.5rem; }
+      @media (min-width: 780px) {
+        .form-grid { grid-template-columns: repeat(2, 1fr); }
+        .field--full { grid-column: 1 / -1; }
+      }
+
+      /* Field styling: include email + textarea */
+.field label { display:block; font-weight:600; color: #243143; margin-bottom:.25rem; }
+
+.field input[type="text"],
+.field input[type="tel"],
+.field input[type="email"],
+.field select,
+.field textarea {
+  width:100%;
+  min-height:44px;
+  padding:.6rem .8rem;
+  border-radius:10px;
+  border:1px solid #243143;
+  background:#e2e8f0;
+  color:#e2e8f0;
+}
+
+/* Optional: nicer placeholder + focus */
+.field ::placeholder { color:#979797; opacity:.9; }
+.field :focus-visible {
+  outline:2px solid #facc15; /* or your accent */
+  outline-offset:2px;
+  border-color:#facc15;
+}
+
+.hint { display:block; margin-top:.25rem; font-size:.85rem; color:#e2e8f0; opacity:.8; }
+
+/* Consent layout */
+.consent { display:flex; gap:.6rem; align-items:flex-start; }
+.consent input { margin-top:.35rem; }
+
+/* Social: correct border + center */
+.social__list {
+  list-style:none; padding:0; margin:0;
+  display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; align-items:center;
+}
+.social__link {
+  --size:44px;
+  width:var(--size); height:var(--size);
+  display:inline-grid; place-items:center;
+  border:1px solid #243143;       /* <-- add width + style */
+  border-radius:999px;
+  background:#ffffff;
+  color:#0b1220;
+  transition:transform .2s ease, border-color .2s ease, color .2s ease;
+}
+.social__link:hover, .social__link:focus-visible {
+  border-color:#facc15; color:#facc15; transform:scale(1.05);
+}
+.social__link img { width:24px; height:24px; display:block; }
+
+
+      /* accessibility */
+      :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+      .hp { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+      /* layout nicety for city/state/zip on wide screens */
+      @media (min-width: 780px) {
+        #city { grid-column: auto; }
+        #state { grid-column: auto; }
+        #zip { grid-column: auto; }
+      }
+    </style>
+
+    <script is:inline>
+      const form = document.getElementById('contact');
+      const status = form?.querySelector('.status');
+
+      form?.addEventListener('submit', (e) => {
+        if (!form.checkValidity()) {
+          e.preventDefault();
+          status.textContent = 'Please complete the required fields.';
+          const firstInvalid = form.querySelector(':invalid');
+          firstInvalid?.focus();
+        } else {
+          status.textContent = 'Sending…';
+        }
+      });
+    </script>
+  </footer>
+</>
