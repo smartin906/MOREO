@@ -1,10 +1,98 @@
 ---
-interface Props { children?: any }
+interface Props {
+  kicker?: string;                       // small label above the intro
+  align?: "center" | "left" | "right";   // default: center
+  tone?: "default" | "contrast" | "soft";// background style
+  maxWidth?: string;                     // e.g. "72ch" or "900px" (optional)
+}
+const {
+  kicker,
+  align = "center",
+  tone = "default",
+  maxWidth
+} = Astro.props as Props;
 ---
-<section class="section">
-  <div class="wrap wrap--narrow">
-    <div class="lead">
-      <slot />
+<section class={`section intro intro--${tone}`} data-align={align}>
+  <div class="wrap">
+    <div class="intro__inner" style={maxWidth ? `max-width:${maxWidth}` : undefined}>
+      {kicker && <p class="intro__kicker">{kicker}</p>}
+      <div class="intro__lead">
+        <slot />
+      </div>
     </div>
   </div>
+
+  <style>
+    /* container & alignment */
+    .intro [data-align] {}
+    .intro .wrap { text-align: center; }
+    .intro [data-align="left"] .wrap { text-align: left; }
+    .intro [data-align="right"] .wrap { text-align: right; }
+
+    .intro__inner {
+      margin-inline: auto;
+      /* fallback width if no prop passed */
+      max-width: 75ch;
+    }
+
+    /* kicker (eyebrow) */
+    .intro__kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin: 0 0 .6rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-size: .85rem;
+      color: var(--ink-dim);
+      opacity: .95;
+      position: relative;
+    }
+    .intro__kicker::before {
+      content: "";
+      width: 36px; height: 3px;
+      background: var(--accent);
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    /* BIG, attention-grabbing lead text */
+    .intro__lead {
+      /* larger than before, fluid, with comfortable line length */
+      font-size: clamp(1.25rem, 1rem + 2vw, 2rem);
+      line-height: 1.6;
+      color: var(--ink);
+      letter-spacing: .2px;
+      font-weight: 600;              /* stronger weight to stand out */
+    }
+    .intro__lead :where(p) { margin: 0; }          /* allow plain <p> drops */
+    .intro__lead :where(p + p) { margin-top: .6rem; }
+
+    /* tone variants */
+    .intro--default {}
+    .intro--soft {
+      background:
+        radial-gradient(900px 400px at 10% -10%, rgba(250,204,21,.08), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      border-block: 1px solid var(--border);
+    }
+    .intro--contrast {
+      background: #0b1220;
+      border-block: 1px solid var(--border);
+      /* lift the text slightly on the darker slab */
+      .intro__lead { color: #e2e8f0; }
+      .intro__kicker { color: #cbd5e1; }
+    }
+
+    /* optional subtle emphasis for any inline <strong> */
+    .intro__lead strong {
+      background: linear-gradient(transparent 60%, rgba(250,204,21,.25) 0);
+      padding: 0 .08em;
+      border-radius: 4px;
+    }
+
+    /* responsive spacing tweak */
+    .intro.section { padding-block: clamp(2.2rem, 4.5vw, 4.5rem); }
+  </style>
 </section>

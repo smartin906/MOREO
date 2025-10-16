@@ -1,39 +1,40 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SectionHero from "../components/sections/SectionHero.astro";
+import SectionHero from "../components/sections/HeroImage.astro";
 import SectionIntro from "../components/sections/SectionIntro.astro";
 import SectionCopyTwoCol from "../components/sections/SectionCopyTwoCol.astro";
 import SectionCopy from "../components/sections/SectionCopy.astro";
 import SectionGallery from "../components/sections/SectionGallery.astro";
 import SectionCTA from "../components/sections/SectionCTA.astro";
-
+// Use the SVG file path as a string instead of importing it
+const connectLogo = "/media/lets_connect.svg";
 import items from "../data/gallery-sample.json";
 ---
 <BaseLayout title="Template Example | MRSP" description="Reusable page template with sections.">
-  <SectionHero
-    title="Open the door to higher education"
-    subtitle="Explore Missouri colleges, compare options, and connect directly with admissions — all from one place."
-    imageSrc="/media/home_page_hero.png"
-    imageAlt="Students exploring options"
-    overlaySide="bottom"
-    overlayWidth="70vw"
-    objectPosition="center 40%"
-  />
+ <HeroImage
+  title="Open the door to higher education"
+  subtitle="Explore Missouri colleges, compare options, and connect directly with admissions."
+  imageSrc="/media/hero-poster.jpg"
+  overlaySide="left"
+  overlayWidth="70vw"
+  objectPosition="center 40%"
+
+  logoImgSrc="/media/logo-hero.png"
+  logoImgAlt="Missouri Rural Education Outreach"
+  logoAlign="center"      /* "center" | "left" | "right" */
+/>
 
   <SectionIntro>
-    Our mission is simple: make higher education pathways clear, supportive, and accessible for every rural student in Missouri.
+    In many rural communities, students with the talent and drive to succeed in college face challenges that have nothing to do with ability — limited guidance counselors, fewer mentors, and less access to information about applications, scholarships, or career paths.
   </SectionIntro>
 
-  <SectionCopyTwoCol pullQuote={{ text: "This program helped me find the right school and the right support.", cite: "UCM transfer student" }}>
-    <Fragment slot="left">
-      <p><strong>What we offer:</strong> mentorship, application support, and direct connections to university staff.</p>
-      <p>From FAFSA to campus visits, our team helps you make confident choices.</p>
-    </Fragment>
-    <Fragment slot="right">
-      <p><strong>Who it’s for:</strong> rural high-school students, parents/guardians, and mentors who want to help.</p>
-      <p>We partner with Missouri public universities to bring resources closer to home.</p>
-    </Fragment>
-  </SectionCopyTwoCol>
+  <SectionCopyTwoCol
+    align="center"
+    leftTitle="What students get"
+    leftItems={["1:1 mentorship", "FAFSA support", "Campus visits", "Scholarships"]}
+    rightTitle="What partners provide"
+    rightItems={["Admissions connections", "Workshops", "Outreach", "Funding"]}
+  />
 
   <SectionGallery
     title="Programs & Moments"

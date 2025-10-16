@@ -1,31 +1,119 @@
 ---
+interface PullQ { text: string; cite?: string }
 interface Props {
-  left?: any;
-  right?: any;
-  pullQuote?: { text: string; cite?: string } | null;
+  leftTitle?: string;
+  leftItems?: string[];      // bullet list for left column
+  rightTitle?: string;
+  rightItems?: string[];     // bullet list for right column
+  pullQuote?: PullQ | null;
+  align?: "left" | "center"; // centers titles + lists when "center"
 }
-const { left, right, pullQuote = null } = Astro.props as Props;
+const {
+  leftTitle,
+  leftItems = [],
+  rightTitle,
+  rightItems = [],
+  pullQuote = null,
+  align = "left",
+} = Astro.props as Props;
+
+const hasLeftSlot = Astro.slots.has("left");
+const hasRightSlot = Astro.slots.has("right");
 ---
-<section class="section">
+
+<section class="section two-col" data-align={align}>
   <div class="wrap">
+
     {pullQuote && (
-      <figure class="wrap wrap--narrow" style="margin-bottom:1rem;">
+      <figure class="pullwrap">
         <blockquote class="pull">{pullQuote.text}</blockquote>
-        {pullQuote.cite && <figcaption style="opacity:.8;margin-top:.25rem;">— {pullQuote.cite}</figcaption>}
+        {pullQuote.cite && <figcaption>— {pullQuote.cite}</figcaption>}
       </figure>
     )}
+
     <div class="cols">
-      <article class="prose">
-        {left ? <Fragment set:html={left} /> : <slot name="left" />}
+      <article class="col">
+        {leftTitle && <h3 class="col__title">{leftTitle}</h3>}
+
+        {hasLeftSlot ? (
+          <slot name="left" />
+        ) : (
+          leftItems.length > 0 && (
+            <ul class="col__list">
+              {leftItems.map((item) => <li>{item}</li>)}
+            </ul>
+          )
+        )}
       </article>
-      <article class="prose">
-        {right ? <Fragment set:html={right} /> : <slot name="right" />}
+
+      <article class="col">
+        {rightTitle && <h3 class="col__title">{rightTitle}</h3>}
+
+        {hasRightSlot ? (
+          <slot name="right" />
+        ) : (
+          rightItems.length > 0 && (
+            <ul class="col__list">
+              {rightItems.map((item) => <li>{item}</li>)}
+            </ul>
+          )
+        )}
       </article>
     </div>
   </div>
-</section>
 
-<style>
-  .prose p { margin: 0 0 1rem; }
-  .prose ul, .prose ol { margin: 0 0 1rem 1.2rem; }
-</style>
+  <style>
+    /* Pull-quote */
+    .pullwrap {
+      max-width: 75ch;
+      margin: 0 auto 1.25rem;
+      text-align: center;
+      color: var(--ink-dim);
+    }
+    .pullwrap figcaption { margin-top: .35rem; opacity: .9; }
+
+    /* Grid */
+    .cols {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px) {
+      .cols { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+
+    /* Columns */
+    .col { background: transparent; }
+    .col__title {
+      margin: 0 0 .5rem;
+      font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
+      color: var(--ink);
+      letter-spacing: .2px;
+    }
+
+    /* Lists (default left-aligned) */
+    .col__list {
+      margin: 0;
+      padding-left: 1.1rem;          /* indent bullets for left alignment */
+      display: grid;
+      gap: .5rem;
+      list-style: disc;
+    }
+    .col__list li {
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    /* Centering rules when align="center" */
+    .two-col[data-align="center"] .col { text-align: center; }
+    .two-col[data-align="center"] .col__title { text-align: center; }
+    .two-col[data-align="center"] .col__list {
+      padding-left: 0;               /* remove indent */
+      list-style-position: inside;   /* bullets align with centered text */
+      justify-items: center;         /* keeps grid spacing symmetric */
+    }
+
+    /* Spacing for mixed content */
+    .col :where(p, ul, ol) { margin: 0 0 .75rem; }
+  </style>
+</section>

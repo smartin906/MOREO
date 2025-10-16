@@ -1,21 +1,26 @@
 ---
-import logo from "../assets/logo.svg";
+/* Swap this for your actual logo path. If the file is in /public/media, use that URL directly. */
+const logoSrc = "/media/logo.svg";
+
 const links = [
-  { name: "Home", href: "/home" },
-  { name: "Partners", href: "/partners" },
+  { name: "Apply Here", href: "/apply" },
   { name: "About Us", href: "/about" },
+  { name: "Our Partners", href: "/partners" },
+  { name: "In-Person Events", href: "/events" },
+  { name: "Become a Mentor", href: "/mentors" },
   { name: "example", href: "/example" },
 ];
+
 const { pathname } = Astro.url;
 ---
 <nav class="nav">
-  <div class="container nav__row">
-    <a href="/home" class="nav__brand">
-      <img src={logo.src} alt="Rural Education Outreach Logo" width="120" height="120" class="nav__logo" />
+  <div class="container nav__wrap">
+    <a href="/" class="nav__brand" aria-label="Home">
+      <img src={logoSrc} alt="Site logo" class="nav__logo" width="120" height="120" />
     </a>
 
     <ul class="nav__list">
-      {links.map(link => (
+      {links.map((link) => (
         <li>
           <a
             href={link.href}
@@ -28,28 +33,34 @@ const { pathname } = Astro.url;
       ))}
     </ul>
   </div>
-</nav>
 
-<style>
-.nav__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.nav__brand {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.nav__logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-}
-@media (max-width: 480px) {
-  .nav__title { font-size: 1rem; }
-}
-</style>
+  <style>
+    .nav { background:#111827; border-bottom:1px solid #1f2937; }
+    .nav__wrap { display:grid; gap:.5rem; padding-block:.75rem; }
+
+    /* centered logo */
+    .nav__brand { justify-self:center; }
+    .nav__logo { width:auto; height:72px; object-fit:contain; display:block; }
+
+    /* links: always visible, centered, wrap on small screens */
+    .nav__list {
+      list-style:none; margin:0; padding:0;
+      display:flex; flex-wrap:wrap; gap:.75rem 1rem;
+      align-items:center; justify-content:center;
+    }
+    .nav__list a {
+      color:#e2e8f0; opacity:.9; text-decoration:none; position:relative;
+      padding:.25rem .4rem; border-radius:8px;
+      transition: color .2s ease, opacity .2s ease;
+      white-space: nowrap;
+    }
+    .nav__list a:hover { color:#facc15; opacity:1; }
+
+    /* active page */
+    .nav__list a.active { color:#facc15; font-weight:600; opacity:1; }
+    .nav__list a.active::after {
+      content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px;
+      background:#facc15; border-radius:2px;
+    }
+  </style>
+</nav>

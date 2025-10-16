@@ -1,44 +1,52 @@
 <footer class="site-footer">
-  <div class="wrap">
-
-    <!-- Logo / image -->
+  <div class="container container--fluid">
+    <!-- Logo -->
     <a href="/" class="footer__brand" aria-label="Home">
-      <!-- swap this src for your real logo -->
-      <img src="/media/logo-placeholder.svg" alt="Your logo" class="footer__logo" width="160" height="48" />
+      <!-- width/height attrs removed so CSS controls size -->
+      <img src="/media/MOREO_secondary_rev.svg" alt="Your logo" class="footer__logo" />
     </a>
 
-  
+    <h2 class="footer__heading">Get in touch</h2>
+    <p class="footer__intro">Share your info and we’ll follow up.</p>
 
-    <!-- Simple contact form -->
     <form id="contact" class="footer-form" method="post" action="/api/contact" novalidate>
-      <!-- anti-bot honeypot -->
+      <!-- spam honeypot -->
       <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <div class="form-grid">
+        <!-- First name -->
         <div class="field">
-          <label for="name">Full name</label>
-          <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+          <label for="name">First name</label>
+          <input id="name" name="name" type="text" required autocomplete="given-name" placeholder="Jane" />
           <small class="hint">Required</small>
         </div>
 
+        <!-- Last name -->
         <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" />
+          <label for="lastname">Last name</label>
+          <input id="lastname" name="lastname" type="text" required autocomplete="family-name" placeholder="Doe" />
           <small class="hint">Required</small>
         </div>
 
+        <!-- Phone -->
         <div class="field">
           <label for="phone">Phone <span class="muted">(optional)</span></label>
-          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
-                 placeholder="(555) 555-5555"
-                 pattern="^\\+?[\\d\\s\\-\\(\\)]{7,}$" />
+          <input
+            id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+            placeholder="(555) 555-5555"
+            pattern="^\\+?[\\d\\s\\-\\(\\)]{7,}$"
+          />
+          <small class="hint">Digits, spaces, dashes, or parentheses</small>
         </div>
 
-        <div class="field field--full">
-          <label for="message">Message <span class="muted">(optional)</span></label>
-          <textarea id="message" name="message" rows="4" placeholder="Tell us how we can help…"></textarea>
+        <!-- Email -->
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+          <small class="hint">Required</small>
         </div>
 
+        <!-- Consent -->
         <div class="field field--full">
           <label class="consent">
             <input id="consent" name="consent" type="checkbox" required />
@@ -46,6 +54,7 @@
           </label>
         </div>
 
+        <!-- Submit -->
         <div class="actions field--full">
           <button type="submit" class="btn">Send</button>
           <span class="status" role="status" aria-live="polite"></span>
@@ -53,150 +62,124 @@
       </div>
     </form>
 
-      <!-- Social icons -->
+    <!-- Social media -->
     <nav class="social" aria-label="Social media">
       <ul class="social__list">
         <li>
           <a class="social__link" href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <img src="/icons/facebook.svg" alt="" width="24" height="24" />
+            <img src="/media/facebook.svg" alt="" width="24" height="24" />
             <span class="sr-only">Facebook</span>
           </a>
         </li>
         <li>
-          <a class="social__link" href="https://x.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-            <img src="/icons/x.svg" alt="" width="24" height="24" />
+          <a class="social__link" href="https://x.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="X (formerly Twitter)">
+            <img src="/media/twitter.svg" alt="" width="24" height="24" />
             <span class="sr-only">X</span>
           </a>
         </li>
         <li>
           <a class="social__link" href="https://instagram.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <img src="/public/media/instagram.svg" alt="" width="24" height="24" />
+            <img src="/media/instagram.svg" alt="" width="24" height="24" />
             <span class="sr-only">Instagram</span>
           </a>
         </li>
         <li>
           <a class="social__link" href="https://www.linkedin.com/company/yourcompany" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <img src="/icons/linkedin.svg" alt="" width="24" height="24" />
+            <img src="/media/linkedin.svg" alt="" width="24" height="24" />
             <span class="sr-only">LinkedIn</span>
-          </a>
-        </li>
-        <li>
-          <a class="social__link" href="https://youtube.com/@yourchannel" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-            <img src="/icons/youtube.svg" alt="" width="24" height="24" />
-            <span class="sr-only">YouTube</span>
           </a>
         </li>
       </ul>
     </nav>
 
-    <hr class="rule" />
-    <p class="copy">© {new Date().getFullYear()} Your Organization. All rights reserved.</p>
+    <hr class="footer__rule" />
+    <p class="footer__copy">© {new Date().getFullYear()} Missouri Rural Education Outreach. All rights reserved.</p>
   </div>
 
   <style>
-    /* container & layout */
-    .site-footer {
-      background: #0f172a; color: #e2e8f0;
-      border-top: 1px solid #1f2937;
-      padding: 2rem 0; width: 100%;
-    }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 1rem; text-align: center; }
+    .site-footer { background-color:#519AD4; color:#fff; border-top:1px solid transparent; padding:2rem 0; margin-top:2rem; width:100%; }
+    .container--fluid { max-width:none; width:100%; margin:0; text-align:center; padding-inline:max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right)); }
 
-    /* logo */
-    .footer__brand { display:inline-flex; align-items:center; justify-content:center; margin: 0 auto .5rem; }
-    .footer__logo { height: 56px; width: auto; object-fit: contain; display:block; }
+    /* responsive logo */
+    .footer__brand { display:inline-flex; justify-content:center; margin-inline:auto; }
+    .footer__logo {
+      display:block;
+      max-width:100%;
+      height:auto;
+      width: clamp(96px, 40vw, 180px); /* scales on mobile, caps on desktop */
+      object-fit:contain;
+      margin-inline:auto;
+      filter: brightness(1.1) contrast(1.1);
+    }
 
-    /* social */
-    .social { margin: .75rem 0 1rem; }
-    .social__list {
-      list-style: none; padding: 0; margin: 0;
-      display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap;
-    }
-    .social__link {
-      --size: 44px;
-      width: var(--size); height: var(--size);
-      display: inline-grid; place-items: center;
-      border: 1px solid #243143; border-radius: 999px;
-      background: #0b1220; color: #94a3b8;
-      transition: transform .2s ease, border-color .2s ease, color .2s ease;
-    }
-    .social__link:hover, .social__link:focus-visible {
-      border-color: #facc15; color: #facc15; transform: scale(1.05);
-    }
-    .social__link img { width: 24px; height: 24px; display: block; }
+    .footer__heading { margin:.25rem 0; font-size:clamp(1.1rem, .9rem + .8vw, 1.5rem); }
+    .footer__intro { margin:0 0 1rem; }
+    .footer__rule { border:0; border-top:1px solid rgba(255,255,255,.25); margin:1.5rem 0 .75rem; }
+    .footer__copy { margin:0; color:#e2e8f0; text-align:center; }
 
-    /* form */
-    .footer-form { margin-top: .5rem; }
-    .form-grid { display:grid; grid-template-columns: 1fr; gap: 3rem; justify-items: center; }
-    @media (min-width: 860px) {
-      .form-grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); max-width: 900px; margin: 0 auto; }
-      .field--full { grid-column: 1 / -1; }
-    }
-    .field { width: min(100%, 520px); text-align: left; }
-    .field label { display:block; font-weight:600; color:#fff; margin-bottom:.3rem; }
-    .muted { color:#94a3b8; font-weight:400; }
+    .footer-form { margin-top:.75rem; }
+    .form-grid { display:grid; grid-template-columns:1fr; gap:1.25rem; justify-items:center; }
+    @media (min-width:780px){ .form-grid { grid-template-columns:repeat(2, minmax(260px,1fr)); max-width:900px; margin-inline:auto; } .field--full{ grid-column:1 / -1; } }
+
+    .field { width:min(100%, 540px); }
+    .field label { display:block; font-weight:600; color:#fff; margin-bottom:.25rem; }
+    .muted { opacity:.9; }
+
+    /* inputs: include email + textarea for future-proofing */
     .field input[type="text"],
-    .field input[type="email"],
     .field input[type="tel"],
+    .field input[type="email"],
+    .field select,
     .field textarea {
-      width:100%; min-height:44px; padding:.6rem .8rem;
-      border-radius:10px; border:1px solid #243143; background:#0b1220; color:#e2e8f0;
+      width:100%;
+      min-height:44px;
+      padding:.6rem .8rem;
+      border-radius:10px;
+      border:1px solid #243143;
+      background:#0b1220;
+      color:#e2e8f0;
     }
-    .field textarea { min-height: 120px; }
-    .field ::placeholder { color:#9aa6b2; opacity:.9; }
-    .hint { display:block; margin-top:.25rem; font-size:.85rem; color:#9aa6b2; }
+    .field ::placeholder { color:#c9d6e3; opacity:.9; }
+    .field :focus-visible { outline:2px solid #facc15; outline-offset:2px; border-color:#facc15; }
+    .hint { display:block; margin-top:.25rem; font-size:.85rem; color:#eef6ff; opacity:.85; }
 
     .consent { display:flex; gap:.6rem; align-items:flex-start; }
     .consent input { margin-top:.35rem; }
 
-    .btn {
-      padding:.6rem .95rem; border-radius:10px;
-      background:#111827; border:1px solid #243143; color:#e2e8f0;
-    }
+    .btn { padding:.6rem .95rem; border-radius:10px; background:#111827; border:1px solid #243143; color:#fff; }
     .btn:hover { border-color:#facc15; color:#facc15; }
-
     .status { margin-left:.75rem; font-size:.95rem; }
-    .rule { border:0; border-top:1px solid #1f2937; margin:1.5rem 0 .75rem; }
-    .copy { margin:0; color:#cbd5e1; }
 
-    /* a11y */
+    /* social */
+    .social { margin-top:1.25rem; }
+    .social__list { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; align-items:center; }
+    .social__link {
+      --size:44px; width:var(--size); height:var(--size);
+      display:inline-grid; place-items:center;
+      border:1px solid #243143; border-radius:999px;
+      background:#ffffff; color:#0b1220;
+      transition:transform .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .social__link:hover, .social__link:focus-visible { border-color:#facc15; color:#facc15; transform:scale(1.05); }
+    .social__link img { width:24px; height:24px; display:block; }
+
+    /* accessibility */
     :focus-visible { outline:2px solid #facc15; outline-offset:2px; border-radius:6px; }
     .hp { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
-    .sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   </style>
 
   <script is:inline>
     const form = document.getElementById('contact');
     const status = form?.querySelector('.status');
     form?.addEventListener('submit', (e) => {
-      form?.addEventListener('submit', async (e) => {
+      if (!form.checkValidity()) {
         e.preventDefault();
-        status.textContent = '';
-        if (!form.checkValidity()) {
-          status.textContent = 'Please complete the required fields.';
-          const firstInvalid = form.querySelector(':invalid');
-          firstInvalid?.focus();
-          return;
-        }
+        status.textContent = 'Please complete the required fields.';
+        const firstInvalid = form.querySelector(':invalid');
+        firstInvalid?.focus();
+      } else {
         status.textContent = 'Sending…';
-
-        const formData = new FormData(form);
-        try {
-          const response = await fetch(form.action, {
-            method: form.method,
-            body: formData,
-            headers: {
-              'Accept': 'application/json'
-            }
-          });
-          if (response.ok) {
-            status.textContent = 'Thank you! Your message has been sent.';
-            form.reset();
-          } else {
-            const error = await response.json();
-            status.textContent = error.message || 'Something went wrong. Please try again.';
-          }
-        } catch (err) {
-          status.textContent = 'Network error. Please try again later.';
-        }
-      });
+      }
+    });
+  </script>
+</footer>

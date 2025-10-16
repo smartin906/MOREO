@@ -1,4 +1,5 @@
 ---
+/** HeroImage.astro — full-width image hero with optional logo above H1 */
 interface Props {
   title: string;
   subtitle?: string;
@@ -15,7 +16,9 @@ interface Props {
 
   logoAlign?: "center" | "left" | "right";
   tintLogo?: boolean;         // SVG only: force to currentColor
+  class?: string;             // optional extra classes (e.g., "full-bleed")
 }
+
 const {
   title,
   subtitle,
@@ -30,9 +33,10 @@ const {
   logoImgAlt = "Logo",
   logoAlign = "center",
   tintLogo = false,
+  class: klass = "",
 } = Astro.props as Props;
 ---
-<section class="hero section section--wide">
+<section class={`hero ${klass}`}>
   <!-- Background image -->
   <img
     class="hero__image"
@@ -79,51 +83,94 @@ const {
       align-items: end;
       overflow: clip;
       isolation: isolate;
+      width: 100%;
     }
+
+    /* full-bleed helper (optional): apply by passing class="full-bleed" */
+    .full-bleed {
+      position: relative;
+      left: 50%; right: 50%;
+      margin-left: -50vw; margin-right: -50vw;
+      width: 100vw;
+      overflow: clip;
+    }
+    @supports (width: 100svw) {
+      .full-bleed {
+        width: 100svw;
+        margin-left: calc(50% - 50svw);
+        margin-right: calc(50% - 50svw);
+      }
+    }
+
+    /* background image */
     .hero__image {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover; max-width: none;
+      object-fit: cover;
+      max-width: none;
     }
 
     /* overlay */
-    .hero__overlay { position: absolute; inset: 0; pointer-events:none; width:100%; height:100%; --angle:90deg; }
-    .hero__overlay::before {
-      content:""; position:absolute; inset:0;
-      width: var(--overlay-width, 70vw); height:100%;
-      background: linear-gradient(var(--angle), rgba(15,23,42,.86), rgba(15,23,42,.65) 60%, rgba(15,23,42,0) 100%);
+    .hero__overlay {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      width: 100%; height: 100%;
+      --angle: 90deg; /* default: left-to-right */
     }
-    .hero__overlay[data-side="right"] { --angle:270deg; }
-    .hero__overlay[data-side="right"]::before { left:auto; right:0; }
-    .hero__overlay[data-side="top"] { --angle:180deg; }
-    .hero__overlay[data-side="top"]::before { width:100%; height:var(--overlay-width,60vh); inset:0 auto auto 0; }
-    .hero__overlay[data-side="bottom"] { --angle:0deg; }
-    .hero__overlay[data-side="bottom"]::before { width:100%; height:var(--overlay-width,60vh); inset:auto 0 0 0; }
+    .hero__overlay::before {
+      content: ""; position: absolute; inset: 0;
+      width: var(--overlay-width, 70vw); height: 100%;
+      background: linear-gradient(
+        var(--angle),
+        rgba(15,23,42,.86),
+        rgba(15,23,42,.65) 60%,
+        rgba(15,23,42,0) 100%
+      );
+    }
+    .hero__overlay[data-side="right"] { --angle: 270deg; }
+    .hero__overlay[data-side="right"]::before { left: auto; right: 0; }
+    .hero__overlay[data-side="top"] { --angle: 180deg; }
+    .hero__overlay[data-side="top"]::before {
+      width: 100%; height: var(--overlay-width, 60vh); inset: 0 auto auto 0;
+    }
+    .hero__overlay[data-side="bottom"] { --angle: 0deg; }
+    .hero__overlay[data-side="bottom"]::before {
+      width: 100%; height: var(--overlay-width, 60vh); inset: auto 0 0 0;
+    }
 
+    /* content + logo */
     .hero__content {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       padding-block: clamp(2rem, 6vh, 4rem);
       text-align: center;
-      /* fluid logo sizing */
+      /* fluid logo sizing (override via inline style if needed) */
       --logo-min: 120px;
       --logo-ideal: 24vw;
       --logo-max: 360px;
     }
-    .hero__content[data-align="left"] { text-align: left; }
+    .hero__content[data-align="left"]  { text-align: left; }
     .hero__content[data-align="right"] { text-align: right; }
 
-    .hero__logo { display:grid; place-items:center; margin:0 0 1rem; color:#e2e8f0; }
+    .hero__logo {
+      display: grid;
+      place-items: center;
+      margin: 0 0 1rem;
+      color: #e2e8f0; /* affects SVG if it uses currentColor or when tintLogo=true */
+    }
 
     /* SVG version */
     .hero__logoSvg :where(svg) {
       width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
-      height: auto; display:block; max-width:100%;
+      height: auto;
+      display: block;
+      max-width: 100%;
     }
     .tint-current :where(svg *) { fill: currentColor !important; stroke: currentColor !important; }
 
     /* PNG/JPG/WebP version */
     .hero__logoImg {
-      display:block;
+      display: block;
       max-width: 100%;
       height: auto;
       width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
@@ -131,17 +178,31 @@ const {
       image-rendering: -webkit-optimize-contrast;
     }
 
-    /* Placeholder */
+    /* placeholder */
     .hero__logoPlaceholder {
       width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
-      min-height: 44px; display:inline-grid; place-items:center;
+      min-height: 44px;
+      display: inline-grid;
+      place-items: center;
       padding: clamp(8px, 1.5vw, 14px);
-      border: 2px dashed rgba(255,255,255,.35); border-radius: 12px;
-      color: #e2e8f0; opacity: .85;
+      border: 2px dashed rgba(255,255,255,.35);
+      border-radius: 12px;
+      color: #e2e8f0;
+      opacity: .85;
     }
     .hero__logoPlaceholder span { font-size: clamp(.8rem, .7rem + .3vw, 1rem); }
 
-    .hero__title { margin:0 0 .4rem; font-size: clamp(1.9rem, 1.2rem + 3vw, 3.1rem); letter-spacing:.2px; }
-    .hero__subtitle { margin:0; color:#94a3b8; font-size: clamp(1rem, .95rem + .5vw, 1.25rem); max-width:60ch; margin-inline:auto; }
+    .hero__title {
+      margin: 0 0 .4rem;
+      font-size: clamp(1.9rem, 1.2rem + 3vw, 3.1rem);
+      letter-spacing: .2px;
+    }
+    .hero__subtitle {
+      margin: 0;
+      color: #94a3b8;
+      font-size: clamp(1rem, .95rem + .5vw, 1.25rem);
+      max-width: 60ch;
+      margin-inline: auto;
+    }
   </style>
 </section>
