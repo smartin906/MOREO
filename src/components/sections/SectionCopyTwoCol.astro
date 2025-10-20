@@ -63,6 +63,13 @@ const hasRightSlot = Astro.slots.has("right");
   </div>
 
   <style>
+
+    .wrap {
+      border-top: #fff solid 2px;
+      border-bottom: #fff solid 2px;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
     /* Pull-quote */
     .pullwrap {
       max-width: 75ch;
@@ -85,10 +92,10 @@ const hasRightSlot = Astro.slots.has("right");
     /* Columns */
     .col { background: transparent; }
     .col__title {
-      margin: 0 0 .5rem;
       font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
-      color: var(--ink);
+      color: #fff;
       letter-spacing: .2px;
+      
     }
 
     /* Lists (default left-aligned) */
@@ -111,6 +118,7 @@ const hasRightSlot = Astro.slots.has("right");
       padding-left: 0;               /* remove indent */
       list-style-position: inside;   /* bullets align with centered text */
       justify-items: center;         /* keeps grid spacing symmetric */
+      
     }
 
     /* Spacing for mixed content */

@@ -1,42 +1,56 @@
 ---
-/** HeroImage.astro — full-width image hero with optional logo above H1 */
+/** HeroImage.astro — full-bleed image hero with dark/light overlay + PNG/SVG logo
+ *  - Forwards arbitrary attrs (incl. style) to <section>
+ *  - Logo size uses CSS var fallbacks so your overrides work
+ */
 interface Props {
   title: string;
   subtitle?: string;
+
   imageSrc: string;
   imageAlt?: string;
+  objectPosition?: string;                 // e.g., "center 40%"
+
   overlaySide?: "left" | "right" | "top" | "bottom";
-  overlayWidth?: string;      // "70vw" for left/right, "60vh" for top/bottom
-  objectPosition?: string;    // e.g. "center 30%"
+  overlayWidth?: string;                   // "70vw" (left/right) or "60vh" (top/bottom)
+  overlayTone?: "dark" | "light";          // overlay palette
 
   /* Logo above H1 — choose ONE */
-  logoSvg?: string;           // RAW SVG markup (import ...?raw and pass here)
-  logoImgSrc?: string;        // PNG/WebP/JPG path (e.g., "/media/logo.png")
-  logoImgAlt?: string;        // alt for the bitmap logo
+  logoSvg?: string;                        // RAW SVG markup (import ...?raw)
+  logoImgSrc?: string;                     // PNG/WebP/JPG path (e.g., "/media/logo.png")
+  logoImgAlt?: string;
 
   logoAlign?: "center" | "left" | "right";
-  tintLogo?: boolean;         // SVG only: force to currentColor
-  class?: string;             // optional extra classes (e.g., "full-bleed")
+  tintLogo?: boolean;                      // SVG only: force to currentColor
+
+  /* Optional typed sizing overrides (alt to style="--logo-*") */
+  logoMin?: string;    // e.g., "140px"
+  logoIdeal?: string;  // e.g., "28vw"
+  logoMax?: string;    // e.g., "460px"
+
+  class?: string;                           // extra classes (e.g., "full-bleed")
 }
 
 const {
-  title,
-  subtitle,
-  imageSrc,
-  imageAlt = "",
-  overlaySide = "left",
-  overlayWidth = "70vw",
-  objectPosition = "center",
-
-  logoSvg,
-  logoImgSrc,
-  logoImgAlt = "Logo",
-  logoAlign = "center",
-  tintLogo = false,
+  title, subtitle,
+  imageSrc, imageAlt = "", objectPosition = "center",
+  overlaySide = "left", overlayWidth = "70vw", overlayTone = "dark",
+  logoSvg, logoImgSrc, logoImgAlt = "Logo", logoAlign = "center", tintLogo = false,
+  logoMin, logoIdeal, logoMax,
   class: klass = "",
-} = Astro.props as Props;
+  ...rest
+} = Astro.props as Props & Record<string, any>;
+
+/* Build optional CSS vars from typed props; merge with any passed style attr */
+const sizeVars = [
+  logoMin   && `--logo-min:${logoMin}`,
+  logoIdeal && `--logo-ideal:${logoIdeal}`,
+  logoMax   && `--logo-max:${logoMax}`,
+].filter(Boolean).join(";") || undefined;
+
+const mergedRest = { ...rest, ...(sizeVars ? { style: `${sizeVars}${rest.style ? `;${rest.style}` : ""}` } : {}) };
 ---
-<section class={`hero ${klass}`}>
+<section class={`hero ${klass}`} data-tone={overlayTone} {...mergedRest}>
   <!-- Background image -->
   <img
     class="hero__image"
@@ -66,7 +80,7 @@ const {
           ? <img class="hero__logoImg" src={logoImgSrc} alt={logoImgAlt} decoding="async" loading="eager" />
           : (logoSvg
               ? <span class="hero__logoSvg" set:html={logoSvg} />
-              : <div class="hero__logoPlaceholder"><span>Logo Placeholder</span></div>
+              : null
             )
       }
     </div>
@@ -78,131 +92,71 @@ const {
   <style>
     .hero {
       position: relative;
+      width: 100%;
       min-height: clamp(52vh, 52vh + 8vw, 80vh);
       display: grid;
       align-items: end;
       overflow: clip;
       isolation: isolate;
-      width: 100%;
+
+      /* DARK tone defaults */
+      --ovr-a: rgba(15,23,42,.86);
+      --ovr-b: rgba(15,23,42,.65);
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --logo-color: #e2e8f0;
     }
 
-    /* full-bleed helper (optional): apply by passing class="full-bleed" */
-    .full-bleed {
-      position: relative;
-      left: 50%; right: 50%;
-      margin-left: -50vw; margin-right: -50vw;
-      width: 100vw;
-      overflow: clip;
+    /* LIGHT (white) tone overrides */
+    .hero[data-tone="light"] {
+      --ovr-a: rgba(255,255,255,.92);
+      --ovr-b: rgba(255,255,255,.60);
+      --title-color: #0b1220;
+      --subtitle-color: #334155;
+      --logo-color: #0b1220;
     }
-    @supports (width: 100svw) {
-      .full-bleed {
-        width: 100svw;
-        margin-left: calc(50% - 50svw);
-        margin-right: calc(50% - 50svw);
-      }
-    }
+
+    /* full-bleed helper (apply via class="full-bleed") */
+    .full-bleed { position: relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; width:100vw; overflow:clip; }
+    @supports (width: 100svw) { .full-bleed { width:100svw; margin-left:calc(50% - 50svw); margin-right:calc(50% - 50svw); } }
 
     /* background image */
-    .hero__image {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      max-width: none;
-    }
+    .hero__image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; max-width:none; }
 
     /* overlay */
-    .hero__overlay {
-      position: absolute; inset: 0;
-      pointer-events: none;
-      width: 100%; height: 100%;
-      --angle: 90deg; /* default: left-to-right */
-    }
+    .hero__overlay { position:absolute; inset:0; pointer-events:none; width:100%; height:100%; --angle:90deg; }
     .hero__overlay::before {
-      content: ""; position: absolute; inset: 0;
-      width: var(--overlay-width, 70vw); height: 100%;
-      background: linear-gradient(
-        var(--angle),
-        rgba(15,23,42,.86),
-        rgba(15,23,42,.65) 60%,
-        rgba(15,23,42,0) 100%
-      );
+      content:""; position:absolute; inset:0;
+      width: var(--overlay-width, 70vw); height:100%;
+      background: linear-gradient(var(--angle), var(--ovr-a), var(--ovr-b) 60%, rgba(0,0,0,0) 100%);
     }
-    .hero__overlay[data-side="right"] { --angle: 270deg; }
-    .hero__overlay[data-side="right"]::before { left: auto; right: 0; }
-    .hero__overlay[data-side="top"] { --angle: 180deg; }
-    .hero__overlay[data-side="top"]::before {
-      width: 100%; height: var(--overlay-width, 60vh); inset: 0 auto auto 0;
-    }
-    .hero__overlay[data-side="bottom"] { --angle: 0deg; }
-    .hero__overlay[data-side="bottom"]::before {
-      width: 100%; height: var(--overlay-width, 60vh); inset: auto 0 0 0;
-    }
+    .hero__overlay[data-side="right"]  { --angle:270deg; }
+    .hero__overlay[data-side="top"]    { --angle:180deg; }
+    .hero__overlay[data-side="bottom"] { --angle:0deg; }
+    .hero__overlay[data-side="top"]::before,
+    .hero__overlay[data-side="bottom"]::before { width:100%; height:var(--overlay-width,60vh); }
 
     /* content + logo */
-    .hero__content {
-      position: relative;
-      z-index: 1;
-      padding-block: clamp(2rem, 6vh, 4rem);
-      text-align: center;
-      /* fluid logo sizing (override via inline style if needed) */
-      --logo-min: 120px;
-      --logo-ideal: 24vw;
-      --logo-max: 360px;
-    }
-    .hero__content[data-align="left"]  { text-align: left; }
-    .hero__content[data-align="right"] { text-align: right; }
+    .hero__content { position:relative; z-index:1; padding-block:clamp(2rem, 6vh, 4rem); text-align:center; }
+    .hero__content[data-align="left"]  { text-align:left; }
+    .hero__content[data-align="right"] { text-align:right; }
 
-    .hero__logo {
-      display: grid;
-      place-items: center;
-      margin: 0 0 1rem;
-      color: #e2e8f0; /* affects SVG if it uses currentColor or when tintLogo=true */
-    }
+    .hero__logo { display:grid; place-items:center; margin:0 0 1rem; color: var(--logo-color); }
 
-    /* SVG version */
+    /* ✅ Use fallbacks so your overrides work via style/props */
     .hero__logoSvg :where(svg) {
-      width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
-      height: auto;
-      display: block;
-      max-width: 100%;
+      width: clamp(var(--logo-min, 120px), var(--logo-ideal, 24vw), var(--logo-max, 360px));
+      height:auto; display:block; max-width:100%;
     }
     .tint-current :where(svg *) { fill: currentColor !important; stroke: currentColor !important; }
 
-    /* PNG/JPG/WebP version */
     .hero__logoImg {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
-      object-fit: contain;
-      image-rendering: -webkit-optimize-contrast;
+      display:block; max-width:50%; height:auto;
+      width: clamp(var(--logo-min, 120px), var(--logo-ideal, 24vw), var(--logo-max, 360px));
+      object-fit: contain; image-rendering: -webkit-optimize-contrast;
     }
 
-    /* placeholder */
-    .hero__logoPlaceholder {
-      width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
-      min-height: 44px;
-      display: inline-grid;
-      place-items: center;
-      padding: clamp(8px, 1.5vw, 14px);
-      border: 2px dashed rgba(255,255,255,.35);
-      border-radius: 12px;
-      color: #e2e8f0;
-      opacity: .85;
-    }
-    .hero__logoPlaceholder span { font-size: clamp(.8rem, .7rem + .3vw, 1rem); }
-
-    .hero__title {
-      margin: 0 0 .4rem;
-      font-size: clamp(1.9rem, 1.2rem + 3vw, 3.1rem);
-      letter-spacing: .2px;
-    }
-    .hero__subtitle {
-      margin: 0;
-      color: #94a3b8;
-      font-size: clamp(1rem, .95rem + .5vw, 1.25rem);
-      max-width: 60ch;
-      margin-inline: auto;
-    }
+    .hero__title   { margin:0 0 .4rem; font-size:clamp(1.9rem, 1.2rem + 3vw, 3.1rem); color: var(--title-color); letter-spacing:.2px; }
+    .hero__subtitle{ margin:0; color: var(--subtitle-color); font-size:clamp(1rem, .95rem + .5vw, 1.25rem); max-width:60ch; margin-inline:auto; }
   </style>
 </section>

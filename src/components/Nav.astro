@@ -1,6 +1,6 @@
 ---
 /* Swap this for your actual logo path. If the file is in /public/media, use that URL directly. */
-const logoSrc = "/media/logo.svg";
+const logoSrc = "/media/primary_logo_rev.svg";
 
 const links = [
   { name: "Apply Here", href: "/apply" },
@@ -40,7 +40,7 @@ const { pathname } = Astro.url;
 
     /* centered logo */
     .nav__brand { justify-self:center; }
-    .nav__logo { width:auto; height:72px; object-fit:contain; display:block; }
+    .nav__logo { width:auto; height:100px; padding: 2rem 1rem; object-fit:contain; display:block; }
 
     /* links: always visible, centered, wrap on small screens */
     .nav__list {

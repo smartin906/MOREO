@@ -87,12 +87,17 @@ const {
 
     /* optional subtle emphasis for any inline <strong> */
     .intro__lead strong {
-      background: linear-gradient(transparent 60%, rgba(250,204,21,.25) 0);
+      background: linear-gradient(transparent 60%, rgba(255, 255, 255, 0.25) 0);
       padding: 0 .08em;
       border-radius: 4px;
     }
 
     /* responsive spacing tweak */
     .intro.section { padding-block: clamp(2.2rem, 4.5vw, 4.5rem); }
+
+    .intro--contrast {
+  background: #f9fcff;           /* <- your color here */
+  border-block: 1px solid var(--border);
+}
   </style>
 </section>

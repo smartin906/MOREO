@@ -1,31 +1,29 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SectionHero from "../components/sections/HeroImage.astro";
+import HeroImage from "../components/sections/HeroImage.astro";
 import SectionIntro from "../components/sections/SectionIntro.astro";
 import SectionCopyTwoCol from "../components/sections/SectionCopyTwoCol.astro";
 import SectionCopy from "../components/sections/SectionCopy.astro";
 import SectionGallery from "../components/sections/SectionGallery.astro";
 import SectionCTA from "../components/sections/SectionCTA.astro";
-// Use the SVG file path as a string instead of importing it
-const connectLogo = "/media/lets_connect.svg";
-import items from "../data/gallery-sample.json";
+import items from "../data/gallery-sample";
 ---
 <BaseLayout title="Template Example | MRSP" description="Reusable page template with sections.">
  <HeroImage
-  title="Open the door to higher education"
-  subtitle="Explore Missouri colleges, compare options, and connect directly with admissions."
-  imageSrc="/media/hero-poster.jpg"
-  overlaySide="left"
-  overlayWidth="70vw"
-  objectPosition="center 40%"
-
-  logoImgSrc="/media/logo-hero.png"
-  logoImgAlt="Missouri Rural Education Outreach"
-  logoAlign="center"      /* "center" | "left" | "right" */
+  imageSrc="/media/about_us_hero.jpeg"
+  overlaySide="bottom"
+  overlayTone="dark"
+  logoImgSrc="/media/all_about_us copy_rev@4x.png"
+  logoAlign="center"
+  style="--logo-min:150; --logo-ideal:5vw; --logo-max:400px"  
 />
 
+
+
   <SectionIntro>
+    <div style="color: #ffffff;">
     In many rural communities, students with the talent and drive to succeed in college face challenges that have nothing to do with ability — limited guidance counselors, fewer mentors, and less access to information about applications, scholarships, or career paths.
+    </div>
   </SectionIntro>
 
   <SectionCopyTwoCol
