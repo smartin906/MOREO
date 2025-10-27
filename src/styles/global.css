@@ -19,7 +19,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 /* Fluid type + line-length */
 body {
-  margin:0; padding:0; background:var(--bg); color:var(--ink);
+  margin:0; padding:0; background:#fff; color:var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   font-size: clamp(15px, 0.92rem + 0.25vw, 18px);
   line-height: 1.55;

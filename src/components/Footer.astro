@@ -6,8 +6,7 @@
       <img src="/media/MOREO_secondary_rev.svg" alt="Your logo" class="footer__logo" />
     </a>
 
-    <h2 class="footer__heading">Get in touch</h2>
-    <p class="footer__intro">Share your info and we’ll follow up.</p>
+    <img src="/media/get_in_touch_rev@4x.png" alt="" width="auto" height="200" aria-hidden="true" />
 
     <form id="contact" class="footer-form" method="post" action="/api/contact" novalidate>
       <!-- spam honeypot -->
@@ -46,13 +45,13 @@
           <small class="hint">Required</small>
         </div>
 
-        <!-- Consent -->
+        <!-- Consent
         <div class="field field--full">
           <label class="consent">
             <input id="consent" name="consent" type="checkbox" required />
             <span>By checking this box, you agree to our <a href="/terms">Terms</a> and acknowledge our <a href="/privacy">Privacy Policy</a>.</span>
           </label>
-        </div>
+        </div> -->
 
         <!-- Submit -->
         <div class="actions field--full">
@@ -97,16 +96,16 @@
   </div>
 
   <style>
-    .site-footer { background-color:#519AD4; color:#fff; border-top:1px solid transparent; padding:2rem 0; margin-top:2rem; width:100%; }
+    .site-footer { background-color:#519AD4; color:#fff; border-top:1px #fff solid; padding:2rem 0; margin-top:2rem; width:100%; }
     .container--fluid { max-width:none; width:100%; margin:0; text-align:center; padding-inline:max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right)); }
 
     /* responsive logo */
-    .footer__brand { display:inline-flex; justify-content:center; margin-inline:auto; }
+    .footer__brand { display:block; justify-content:center; margin-inline:auto; }
     .footer__logo {
       display:block;
       max-width:100%;
       height:auto;
-      width: clamp(96px, 40vw, 180px); /* scales on mobile, caps on desktop */
+      width: clamp(96px, 20vw, 100px); /* scales on mobile, caps on desktop */
       object-fit:contain;
       margin-inline:auto;
       filter: brightness(1.1) contrast(1.1);
@@ -118,11 +117,11 @@
     .footer__copy { margin:0; color:#e2e8f0; text-align:center; }
 
     .footer-form { margin-top:.75rem; }
-    .form-grid { display:grid; grid-template-columns:1fr; gap:1.25rem; justify-items:center; }
+    .form-grid { display:grid; grid-template-columns:1fr; gap:2.25rem; justify-items:center; }
     @media (min-width:780px){ .form-grid { grid-template-columns:repeat(2, minmax(260px,1fr)); max-width:900px; margin-inline:auto; } .field--full{ grid-column:1 / -1; } }
 
     .field { width:min(100%, 540px); }
-    .field label { display:block; font-weight:600; color:#fff; margin-bottom:.25rem; }
+    .field label { text-align: left; display:block; font-weight:600; color:#fff; margin-bottom:.25rem; }
     .muted { opacity:.9; }
 
     /* inputs: include email + textarea for future-proofing */
@@ -141,7 +140,7 @@
     }
     .field ::placeholder { color:#c9d6e3; opacity:.9; }
     .field :focus-visible { outline:2px solid #facc15; outline-offset:2px; border-color:#facc15; }
-    .hint { display:block; margin-top:.25rem; font-size:.85rem; color:#eef6ff; opacity:.85; }
+    .hint { text-align: left; display:block; margin-top:.25rem; font-size:.85rem; color:#dbdbdb; opacity:.85; }
 
     .consent { display:flex; gap:.6rem; align-items:flex-start; }
     .consent input { margin-top:.35rem; }
@@ -152,7 +151,7 @@
 
     /* social */
     .social { margin-top:1.25rem; }
-    .social__list { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; align-items:center; }
+    .social__list { list-style:none; padding:0; margin-top:2rem; display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; align-items:center; }
     .social__link {
       --size:44px; width:var(--size); height:var(--size);
       display:inline-grid; place-items:center;

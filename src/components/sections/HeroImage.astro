@@ -121,7 +121,7 @@ const mergedRest = { ...rest, ...(sizeVars ? { style: `${sizeVars}${rest.style ?
     @supports (width: 100svw) { .full-bleed { width:100svw; margin-left:calc(50% - 50svw); margin-right:calc(50% - 50svw); } }
 
     /* background image */
-    .hero__image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; max-width:none; }
+    .hero__image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; max-width:none; margin: 0%;}
 
     /* overlay */
     .hero__overlay { position:absolute; inset:0; pointer-events:none; width:100%; height:100%; --angle:90deg; }
